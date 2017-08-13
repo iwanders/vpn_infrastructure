@@ -1,0 +1,52 @@
+#!/bin/bash
+
+set -ex
+
+DOCKLAN='172.30.2'
+
+# Example config from openvpn.
+CONF="/etc/openvpn/server.conf"
+# At commit bde1b90da0db2d68d13d274102986f0ca7096c00
+# lines commented out prefixed with '#~'
+
+# Make the VPN the default gateway for the clients.
+echo 'push "redirect-gateway def1 bypass-dhcp"' >> $CONF
+
+# Fix DNS on OS X (was necessary years ago, redundant now?)
+echo 'push "dhcp-option DNS 8.8.8.8"' >> $CONF
+
+# Allow client-client communication
+echo 'client-to-client' >> $CONF
+
+# Enable compression.
+echo 'comp-lzo' >> $CONF
+
+# Ensure the vpn clients are aware that they can now reach
+# the tinc network.
+echo 'push "route 172.30.0.0 255.255.0.0"' >> $CONF
+
+# Ensure that all traffic aimed at the tinc subnet goes to the ip that runs
+# the tinc deamon on this network. So anything to 172.30.0.0/12 has $DOCKLAN.21
+# as its gateway.
+ip route add 172.30.0.0/16 via $DOCKLAN.1 dev eth0
+
+# Ensure the connected VPN clients have NAT.
+echo 1 > /proc/sys/net/ipv4/ip_forward
+iptables -t nat -A POSTROUTING -s $DOCKLAN.128/25 -j MASQUERADE
+
+if [ $1 == '--https' ]; then
+    # Place https range in 128-192
+    echo "server $DOCKLAN.128 255.255.255.224" >> $CONF
+    echo 'port 443' >> $CONF
+    echo 'proto tcp' >> $CONF
+fi
+
+if [ $1 == '--udp' ]; then
+    # Place UDP range in 192 - 256
+    echo "server $DOCKLAN.192 255.255.255.224" >> $CONF
+    echo 'port 1194' >> $CONF
+    echo 'proto udp' >> $CONF
+fi
+
+openvpn --config "$CONF"
+echo "Call with either https or udp as argument."

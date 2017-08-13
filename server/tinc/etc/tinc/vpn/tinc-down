@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# down tinc, remove ip
+ifconfig $INTERFACE down
