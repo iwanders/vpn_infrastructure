@@ -2,7 +2,7 @@
 
 # Set default path, if already set, respect the PKI environment var from
 # easyrsa 3
-EASYRSA_PKI="${EASYRSA_PKI:-'../../pki/pki'}"
+EASYRSA_PKI="${EASYRSA_PKI:-../../pki/pki}"
 
 # Assume that the name is openvpn_server.
 cp $EASYRSA_PKI/private/openvpn_server.key etc/openvpn/server.key

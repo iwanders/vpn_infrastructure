@@ -1,11 +1,13 @@
 *.crt
 *.key
 *.pem
+*.p12
 *.priv
 *.priv.*
 pki/pki/
 clients/*/*.key
 clients/*/*.crt
+clients/*/*.mobileconfig
 
 server/openvpn/openvpn.conf
 server/tinc/tinc.conf
