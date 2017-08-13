@@ -3,3 +3,4 @@
 *.pem
 *.priv
 *.priv.*
+pki/pki/

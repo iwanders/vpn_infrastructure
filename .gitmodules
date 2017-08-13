@@ -1,0 +1,3 @@
+[submodule "pki/easy-rsa"]
+	path = pki/easy-rsa
+	url = https://github.com/OpenVPN/easy-rsa
