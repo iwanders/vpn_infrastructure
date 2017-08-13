@@ -4,7 +4,8 @@ set -ex
 
 DOCKLAN='172.30.2'
 
-# Example config from openvpn.
+# Example config from openvpn
+# https://github.com/OpenVPN/openvpn/blob/master/sample/sample-config-files/server.conf
 CONF="/etc/openvpn/server.conf"
 # At commit bde1b90da0db2d68d13d274102986f0ca7096c00
 # lines commented out prefixed with '#~'
