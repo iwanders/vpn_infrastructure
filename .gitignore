@@ -6,3 +6,6 @@
 pki/pki/
 clients/*/*.key
 clients/*/*.crt
+
+server/openvpn/openvpn.conf
+server/tinc/tinc.conf
