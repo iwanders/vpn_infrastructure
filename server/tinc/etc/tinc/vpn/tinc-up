@@ -1,9 +1,9 @@
 #!/bin/bash
 
-$DOCKLAN='172.30.2'
+VPNLAN='172.30.2'
 
 # Up tinc, add IP
-ifconfig $INTERFACE $DOCKLAN.1 netmask 255.140.0.0 up
+ifconfig $INTERFACE $VPNLAN.1 netmask 255.140.0.0 up
 
 # ensure arp packets are propagated.
 echo 1 >/proc/sys/net/ipv4/conf/$INTERFACE/proxy_arp

@@ -1,6 +1,6 @@
 address=remote_server
 
-# This tinc instance serves subnet DOCKLAN:
+# This tinc instance serves subnet VPNLAN:
 subnet=172.30.2.0/24
 
 -----BEGIN RSA PUBLIC KEY-----

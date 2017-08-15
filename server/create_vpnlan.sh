@@ -1,8 +1,8 @@
 #!/bin/bash
 
-DOCKLAN='172.30.2'
+VPNLAN='172.30.2'
 
-#~ docker network create --subnet 172.30.2.0/24 --gateway 172.30.2.1 docklan
+#~ docker network create --subnet 172.30.2.0/24 --gateway 172.30.2.1 vpnlan
 # ok, at the time of writing there is NO way to set the gateway for the network
 # to an ip that is owned by a container on the network.
 
@@ -12,4 +12,4 @@ DOCKLAN='172.30.2'
 
 # Also, https://github.com/docker/compose/issues/4366 means setting the gateway
 # from a docker compose file is deprecated.
-docker network create --subnet $DOCKLAN.0/24  --gateway $DOCKLAN.254 docklan
+docker network create --subnet $VPNLAN.0/24  --gateway $VPNLAN.254 vpnlan

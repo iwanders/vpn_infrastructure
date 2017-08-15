@@ -1,12 +1,12 @@
 #!/bin/bash
 
-DOCKLAN='172.30.2'
+VPNLAN='172.30.2'
 
 # before tinc goes up, add a route to the OpenVPN server for its local subnet.
 # Openvpn at  172.30.2.3 serves subnet 172.30.2.128/27
-ip route add $DOCKLAN.128/27 via $DOCKLAN.3 dev eth0
+ip route add $VPNLAN.128/27 via $VPNLAN.3 dev eth0
 # Openvpn at  172.30.2.4 serves subnet 172.30.2.192/27
-ip route add $DOCKLAN.192/27 via $DOCKLAN.4 dev eth0
+ip route add $VPNLAN.192/27 via $VPNLAN.4 dev eth0
 
 # Start tinc.
 tincd -D -d 3 --net vpn
