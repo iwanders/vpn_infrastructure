@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Tinc went down, shut the interface down.
+ifconfig $INTERFACE down

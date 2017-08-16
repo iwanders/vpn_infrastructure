@@ -1,0 +1,6 @@
+#!/bin/bash
+
+USERS=$(who | cut -d " " -f1 | sort | uniq)
+for u in $USERS; do
+    sudo -u $u -s -- sh -c "export DISPLAY=:0.0; notify-send \"Host down: $NODE from $REMOTEADDRESS\""
+done

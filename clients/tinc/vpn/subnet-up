@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Here we could add routes, if the subnet isn't already in the netmask used
+# for this interface.
+#~ ip route add $SUBNET dev $INTERFACE

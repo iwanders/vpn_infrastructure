@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# This tinc server will use 172.31.1.1, netmask; entire 172.16.0.0/12 
+ifconfig $INTERFACE 172.30.1.1 netmask 255.140.0.0 up
+
+# ensure arp packets are propagated through the tunnel.
+echo 1 >/proc/sys/net/ipv4/conf/$INTERFACE/proxy_arp
+
+# need to add an explicit route to make other subnets reachable.
+

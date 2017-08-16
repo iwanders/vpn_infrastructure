@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# This file is executed if a host comes up.
+
+# Write a log entry to a file.
+#~ echo -e "$NODE from $REMOTEADDRESS  up: " $(date) "\n" >> /tmp/tinc_node_log_$NODE
+
+# Output a libnotify message indicating a host went up to all users.
+USERS=$(who | cut -d " " -f1 | sort | uniq)
+for u in $USERS; do
+    sudo -u $u -s -- sh -c "export DISPLAY=:0.0; notify-send \"Host up: $NODE from $REMOTEADDRESS\""
+done
