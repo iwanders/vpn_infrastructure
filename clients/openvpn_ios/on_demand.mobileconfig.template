@@ -11,13 +11,13 @@
                         <integer>0</integer>
                 </dict>
                 <key>PayloadDescription</key>
-                <string>Configures VPN settings, including authentication.</string>
+                <string>{VPNPayloadDescription:s}</string>
                 <key>PayloadDisplayName</key>
-                <string>{PayloadDisplayName:s}</string>
+                <string>{VPNPayloadDisplayName:s}</string>
                 <key>PayloadIdentifier</key>
-                <string>{fqdn:s}.vpnondemand</string>
+                <string>{host:s}.vpnondemand</string>
                 <key>PayloadOrganization</key>
-                <string></string>
+                <string>{PayloadOrganization:s}</string>
                 <key>PayloadType</key>
                 <string>com.apple.vpn.managed</string>
                 <key>PayloadUUID</key>
@@ -32,17 +32,20 @@
                 <dict>
                         <key>AuthenticationMethod</key>
                         <string>Certificate</string>
+                        <!--
+                            On demand can be toggled in the menu regardless of this setting.
+                        -->
                         <key>OnDemandEnabled</key>
                         <integer>1</integer>
-                               <!-- on demand rules -->
                         <key>OnDemandRules</key>
                         <array>
                             <dict>
                                 <key>Action</key>
-                                    <string>EvaluateConnection</string>
+                                <string>EvaluateConnection</string>
                                 <key>ActionParameters</key>
                                     <array>
                                         <dict>
+                                            <!-- Start VPN connection when any of these domains are detected. -->
                                             <key>Domains</key>
                                             <array>
                                                 <string>*.com</string>
@@ -51,19 +54,18 @@
                                                 <string>*.info</string>
                                             </array>
                                             <key>RequiredURLStringProbe</key>
-                                                <!-- Or just always connect if this URL cannot be reached. -->
-                                                <string>https://vpn.{fqdn:s}.local/</string>                    
+                                                <!-- Or just always connect if this URL does not return status 200.. -->
+                                                <string>https://vpn.{host:s}.local/</string>                    
                                             <key>DomainAction</key>
-                                                <string>ConnectIfNeeded</string>
+                                            <string>ConnectIfNeeded</string>
                                         </dict>
                                     </array>
                             </dict>
                         </array>
-<!-- on demand rules -->
                         <key>PayloadCertificateUUID</key>
                         <string>{pkcs_payload_uuid:s}</string>
                         <key>RemoteAddress</key>
-                        <string>{fqdn:s}</string>
+                        <string>{host:s}</string>
                 </dict>
                 <key>VPNSubType</key>
                 <string>net.openvpn.OpenVPN-Connect.vpnplugin</string>
@@ -71,6 +73,11 @@
                 <string>VPN</string>
                 <key>VendorConfig</key>
                 <dict>
+                        <!--
+                            These fields are passed as the openvpn configuration.
+                            If a statement has no arguments the string NOARGS 
+                            is used.
+                        -->
                         <key>ca</key>
                             <string>{ca_crt:s}</string>
                         <key>client</key>
@@ -90,7 +97,7 @@
                         <key>proto</key>
                             <string>{proto:s}</string>
                         <key>remote</key>
-                            <string>{fqdn:s} {port:d}</string>
+                            <string>{host:s} {port:d}</string>
                         <key>resolv-retry</key>
                             <string>infinite</string>
                         <key>verb</key>
@@ -114,7 +121,7 @@
                     <key>PayloadDisplayName</key>
                     <string>client_pkcs.p12</string>
                     <key>PayloadIdentifier</key>
-                    <string>remote_server_cert_and_key</string>
+                    <string>{pkcs_payload_uuid:s}.remote_server_cert_and_key</string>
                     <key>PayloadOrganization</key>
                     <string></string>
                     <key>PayloadType</key>
@@ -126,11 +133,11 @@
             </dict>
 	</array>
 	<key>PayloadDescription</key>
-	<string>VPN {fqdn:s}:{port:d}/{proto:s} with vpn on demand</string>
+	<string>{ProfilePayloadDescription:s}</string>
 	<key>PayloadDisplayName</key>
-	<string>{fqdn:s} VPN on demand</string>
+	<string>{ProfilePayloadDisplayName:s}</string>
 	<key>PayloadIdentifier</key>
-	<string>{fqdn:s}.{port:d}.{proto:s}.vpnondemand</string>
+	<string>{host:s}.{port:d}.{proto:s}.vpnondemand</string>
 	<key>PayloadOrganization</key>
 	<string></string>
 	<key>PayloadRemovalDisallowed</key>

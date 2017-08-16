@@ -11,7 +11,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Create iOS VPN on demand '
                                      ' mobileconfig file.')
-    parser.add_argument('--fqdn', type=str,
+    parser.add_argument('--host', type=str,
                         default='remote_server',
                         help='hostname / ip of server')
     parser.add_argument("--proto", type=str, default='tcp',
@@ -23,22 +23,45 @@ if __name__ == "__main__":
                         help='The password for the pk12 file to be loaded.')
     parser.add_argument('--displayname', type=str, default='Remote Server',
                         help='Display name of server')
-    parser.add_argument('--PayloadDisplayName', type=str, default=None,
+    parser.add_argument('--VPNPayloadDisplayName', type=str, default=None,
                         help='Display name, defaults to VPN -'
-                        ' {fqdn}:{port}/{proto}')
+                        ' {host}:{port}/{proto}')
     parser.add_argument('--UserDefinedName', type=str, default=None,
                         help='User defined name, as shown in VPN menu'
-                        ' defaults to VPN - {fqdn}:{port}/{proto}')
+                        ' defaults to VPN - {host}:{port}/{proto}')
+    parser.add_argument('--PayloadOrganization', type=str, default="Organization",
+                        help='The organization to display.')
+    parser.add_argument('--VPNPayloadDescription', type=str,
+                        default="Configures VPN configuration, authentication"
+                        " and on demand rules.",
+                        help='The description to display.')
+    parser.add_argument('--ProfilePayloadDescription', type=str,
+                        default=None,
+                        help='The profile payload description (defaults to: '
+                        'VPN {host:s}:{port:d}/{proto:s} with vpn on demand)')
+    parser.add_argument('--ProfilePayloadDisplayName', type=str,
+                        default=None,
+                        help='The profile payload description (defaults to: '
+                        'VPN {host}:{port}/{proto} on demand)')
 
     args = parser.parse_args()
 
-    if not args.PayloadDisplayName:
-        args.PayloadDisplayName = "VPN - {fqdn}:{port}/{proto}".format(
-            fqdn=args.fqdn, proto=args.proto, port=args.port)
+    if not args.VPNPayloadDisplayName:
+        args.VPNPayloadDisplayName = "VPN - {host}:{port}/{proto}".format(
+            host=args.host, proto=args.proto, port=args.port)
+
+    if not args.ProfilePayloadDisplayName:
+        args.ProfilePayloadDisplayName = "VPN {host}:{port}/{proto} on demand".format(
+            host=args.host, proto=args.proto, port=args.port)
 
     if not args.UserDefinedName:
-        args.UserDefinedName = "VPN - {fqdn}:{port}/{proto}".format(
-            fqdn=args.fqdn, proto=args.proto, port=args.port)
+        args.UserDefinedName = "VPN - {host}:{port}/{proto}".format(
+            host=args.host, proto=args.proto, port=args.port)
+
+    if not args.ProfilePayloadDescription:
+        args.ProfilePayloadDescription = ('VPN {host:s}:{port:d}/{proto:s} with'
+            ' vpn on demand'.format(host=args.host, port=args.port,
+                                    proto=args.proto))
 
     if not args.password:
         args.password = input("Type the .p12 file password:")
@@ -70,7 +93,7 @@ if __name__ == "__main__":
         return "\n".join([line[i:i+w] for i in range(0, len(line), w)])
 
     res = template.format(displayname=args.displayname,
-                          fqdn=args.fqdn, ca_crt=ca_crt.replace("\n", "\\n"),
+                          host=args.host, ca_crt=ca_crt.replace("\n", "\\n"),
                           internal_key_and_cert=wrap(p12_b64),
                           pkcs_payload_uuid=str(uuid.uuid4()).upper(),
                           vpn_payload_uuid=str(uuid.uuid4()).upper(),
@@ -78,8 +101,12 @@ if __name__ == "__main__":
                           port=args.port,
                           password=args.password,
                           config_payload_uuid=str(uuid.uuid4()).upper(),
-                          PayloadDisplayName=args.PayloadDisplayName,
+                          VPNPayloadDisplayName=args.VPNPayloadDisplayName,
                           UserDefinedName=args.UserDefinedName,
+                          PayloadOrganization=args.PayloadOrganization,
+                          VPNPayloadDescription=args.VPNPayloadDescription,
+                          ProfilePayloadDescription=args.ProfilePayloadDescription,
+                          ProfilePayloadDisplayName=args.ProfilePayloadDisplayName,
                           )
 
     with open('on_demand.mobileconfig', 'w') as f:
