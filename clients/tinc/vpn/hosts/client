@@ -1,3 +1,10 @@
 Subnet = 172.30.1.1
 
 # Client public RSA key here.
+
+
+
+
+
+
+# reset_credential_files.sh removes everything after this line.

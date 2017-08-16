@@ -8,6 +8,10 @@ pki/pki/
 clients/*/*.key
 clients/*/*.crt
 clients/*/*.mobileconfig
+clients/tinc/client.*
+clients/tinc/server.*
+/server/tinc/remote_server.*
 
 server/openvpn/openvpn.conf
 server/tinc/tinc.conf
+

@@ -3,4 +3,8 @@ address=remote_server
 # This tinc instance serves subnet VPNLAN:
 subnet=172.30.2.0/24
 
-# Server public RSA key here.
+
+
+
+
+# reset_credential_files.sh removes everything after this line.
