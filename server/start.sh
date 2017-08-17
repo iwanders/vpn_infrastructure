@@ -1,6 +1,6 @@
 #!/bin/bash
 
-./create_docklan.sh
+./create_vpnlan.sh
 
 
 echo "Restarting tinc"

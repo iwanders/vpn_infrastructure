@@ -1,5 +1,28 @@
 #!/usr/bin/env python3
 
+# The MIT License (MIT)
+#
+# Copyright (c) 2017 Ivor Wanders
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+
 import uuid
 import base64
 import sys
@@ -14,6 +37,9 @@ if __name__ == "__main__":
     parser.add_argument('--host', type=str,
                         default='remote_server',
                         help='hostname / ip of server')
+    parser.add_argument('--output', '-o', type=str,
+                        default='vpn_on_demand.mobileconfig',
+                        help='The output file name to write to.')
     parser.add_argument("--proto", type=str, default='tcp',
                         help='use tcp or udp')
     parser.add_argument("--port", type=int, default=443,
@@ -31,6 +57,8 @@ if __name__ == "__main__":
                         ' defaults to VPN - {host}:{port}/{proto}')
     parser.add_argument('--PayloadOrganization', type=str, default="Organization",
                         help='The organization to display.')
+    parser.add_argument('--VPNPayloadOrganization', type=str, default="",
+                        help='The organization to display for the VPN config.')
     parser.add_argument('--VPNPayloadDescription', type=str,
                         default="Configures VPN configuration, authentication"
                         " and on demand rules.",
@@ -80,7 +108,7 @@ if __name__ == "__main__":
     with open("ca.crt", "r") as f:
         ca_crt = f.read()
 
-    with open("on_demand.mobileconfig.template", "r") as f:
+    with open("on_demand.mobileconfig.xml", "r") as f:
         template = f.read()
 
     """
@@ -104,10 +132,11 @@ if __name__ == "__main__":
                           VPNPayloadDisplayName=args.VPNPayloadDisplayName,
                           UserDefinedName=args.UserDefinedName,
                           PayloadOrganization=args.PayloadOrganization,
+                          VPNPayloadOrganization=args.VPNPayloadOrganization,
                           VPNPayloadDescription=args.VPNPayloadDescription,
                           ProfilePayloadDescription=args.ProfilePayloadDescription,
                           ProfilePayloadDisplayName=args.ProfilePayloadDisplayName,
                           )
 
-    with open('on_demand.mobileconfig', 'w') as f:
+    with open(args.output, 'w') as f:
         f.write(res)
