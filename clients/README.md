@@ -5,7 +5,7 @@ This contains guidance how to configure the clients. The `openvpn_` clients assu
     connection on iOS.
 * [openvpn_generic](openvpn_generic) This contains an example configuration for
     OpenVPN, it should work on most systems that support OpenVPN.
-* [tinc][tinc] This contains the example files to setup the keys required for
+* [tinc](tinc) This contains the example files to setup the keys required for
     tinc and the 'client' configuration. Tinc does not differentiate between a
     client and a server, but this is the road warrior configuration.
 

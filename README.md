@@ -37,4 +37,4 @@ Copyright (c) 2017 Ivor Wanders
 [tinc]: https://www.tinc-vpn.org/
 [openvpn]: https://openvpn.net/
 [docker]: https://www.docker.com/
-[mobileconfig_apple_docs]: https://developer.apple.com/library/content/documentation/NetworkingInternet/Conceptual/iPhoneOTAConfiguration/Introduction/Introduction.html
+[mobileconfig_apple_docs]: https://developer.apple.com/library/content/featuredarticles/iPhoneConfigurationProfileRef/Introduction/Introduction.html#//apple_ref/doc/uid/TP40010206
