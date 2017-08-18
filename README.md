@@ -1,6 +1,6 @@
 # vpn_infrastructure
 
-
+![VPN_infrastructure](doc/vpn_infrastructure.png)
 
 ## License
 
