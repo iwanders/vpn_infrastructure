@@ -162,7 +162,7 @@ SOFTWARE.
 	<key>PayloadIdentifier</key>
 	<string>{host:s}.{port:d}.{proto:s}.vpnondemand</string>
 	<key>PayloadOrganization</key>
-	<string>{PayloadOrganization:s}</string>
+	<string>{ProfilePayloadOrganization:s}</string>
 	<key>PayloadRemovalDisallowed</key>
 	<false/>
 	<key>PayloadType</key>

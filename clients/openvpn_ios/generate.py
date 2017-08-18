@@ -32,14 +32,18 @@ if __name__ == "__main__":
 
     import argparse
 
-    parser = argparse.ArgumentParser(description='Create iOS VPN on demand '
-                                     ' mobileconfig file.')
+    parser = argparse.ArgumentParser(
+        description='Create iOS VPN on demand mobileconfig file. No string '
+        'sanitization is done before values are inserted into the template.'
+        )
     parser.add_argument('--host', type=str,
                         default='remote_server',
                         help='hostname / ip of server')
+
     parser.add_argument('--output', '-o', type=str,
                         default='vpn_on_demand.mobileconfig',
                         help='The output file name to write to.')
+
     parser.add_argument("--proto", type=str, default='tcp',
                         help='use tcp or udp')
     parser.add_argument("--port", type=int, default=443,
@@ -47,22 +51,11 @@ if __name__ == "__main__":
     parser.add_argument("--password", type=str,
                         default=None,
                         help='The password for the pk12 file to be loaded.')
-    parser.add_argument('--displayname', type=str, default='Remote Server',
-                        help='Display name of server')
-    parser.add_argument('--VPNPayloadDisplayName', type=str, default=None,
-                        help='Display name, defaults to VPN -'
-                        ' {host}:{port}/{proto}')
+
     parser.add_argument('--UserDefinedName', type=str, default=None,
                         help='User defined name, as shown in VPN menu'
                         ' defaults to VPN - {host}:{port}/{proto}')
-    parser.add_argument('--PayloadOrganization', type=str, default="Organization",
-                        help='The organization to display.')
-    parser.add_argument('--VPNPayloadOrganization', type=str, default="",
-                        help='The organization to display for the VPN config.')
-    parser.add_argument('--VPNPayloadDescription', type=str,
-                        default="Configures VPN configuration, authentication"
-                        " and on demand rules.",
-                        help='The description to display.')
+
     parser.add_argument('--ProfilePayloadDescription', type=str,
                         default=None,
                         help='The profile payload description (defaults to: '
@@ -71,6 +64,19 @@ if __name__ == "__main__":
                         default=None,
                         help='The profile payload description (defaults to: '
                         'VPN {host}:{port}/{proto} on demand)')
+    parser.add_argument('--ProfilePayloadOrganization', type=str,
+                        default="Organization",
+                        help='The organization to display.')
+
+    parser.add_argument('--VPNPayloadDescription', type=str,
+                        default="Configures VPN configuration, authentication"
+                        " and on demand rules.",
+                        help='The description to display.')
+    parser.add_argument('--VPNPayloadDisplayName', type=str, default=None,
+                        help='Display name, defaults to VPN -'
+                        ' {host}:{port}/{proto}')
+    parser.add_argument('--VPNPayloadOrganization', type=str, default="",
+                        help='The organization to display for the VPN config.')
 
     args = parser.parse_args()
 
@@ -79,17 +85,17 @@ if __name__ == "__main__":
             host=args.host, proto=args.proto, port=args.port)
 
     if not args.ProfilePayloadDisplayName:
-        args.ProfilePayloadDisplayName = "VPN {host}:{port}/{proto} on demand".format(
-            host=args.host, proto=args.proto, port=args.port)
+        args.ProfilePayloadDisplayName = "VPN {host}:{port}/{proto} on " \
+            "demand".format(host=args.host, proto=args.proto, port=args.port)
 
     if not args.UserDefinedName:
         args.UserDefinedName = "VPN - {host}:{port}/{proto}".format(
             host=args.host, proto=args.proto, port=args.port)
 
     if not args.ProfilePayloadDescription:
-        args.ProfilePayloadDescription = ('VPN {host:s}:{port:d}/{proto:s} with'
-            ' vpn on demand'.format(host=args.host, port=args.port,
-                                    proto=args.proto))
+        args.ProfilePayloadDescription = 'VPN {host:s}:{port:d}/{proto:s} ' \
+            'with vpn on demand'.format(host=args.host, port=args.port,
+                                        proto=args.proto)
 
     if not args.password:
         args.password = input("Type the .p12 file password:")
@@ -103,6 +109,7 @@ if __name__ == "__main__":
     Testing appears that it is no problem if the p12 file also contains the ca.
     """
     with open("client_pkcs.p12", "rb") as f:
+        # requires to be encoded in base 64
         p12_b64 = base64.b64encode(f.read()).decode('utf-8')
 
     with open("ca.crt", "r") as f:
@@ -120,23 +127,23 @@ if __name__ == "__main__":
     def wrap(line, w=52):
         return "\n".join([line[i:i+w] for i in range(0, len(line), w)])
 
-    res = template.format(displayname=args.displayname,
-                          host=args.host, ca_crt=ca_crt.replace("\n", "\\n"),
-                          internal_key_and_cert=wrap(p12_b64),
-                          pkcs_payload_uuid=str(uuid.uuid4()).upper(),
-                          vpn_payload_uuid=str(uuid.uuid4()).upper(),
-                          proto=args.proto,
-                          port=args.port,
-                          password=args.password,
-                          config_payload_uuid=str(uuid.uuid4()).upper(),
-                          VPNPayloadDisplayName=args.VPNPayloadDisplayName,
-                          UserDefinedName=args.UserDefinedName,
-                          PayloadOrganization=args.PayloadOrganization,
-                          VPNPayloadOrganization=args.VPNPayloadOrganization,
-                          VPNPayloadDescription=args.VPNPayloadDescription,
-                          ProfilePayloadDescription=args.ProfilePayloadDescription,
-                          ProfilePayloadDisplayName=args.ProfilePayloadDisplayName,
-                          )
+    res = template.format(
+            host=args.host, ca_crt=ca_crt.replace("\n", "\\n"),
+            internal_key_and_cert=wrap(p12_b64),
+            pkcs_payload_uuid=str(uuid.uuid4()).upper(),
+            vpn_payload_uuid=str(uuid.uuid4()).upper(),
+            proto=args.proto,
+            port=args.port,
+            password=args.password,
+            config_payload_uuid=str(uuid.uuid4()).upper(),
+            UserDefinedName=args.UserDefinedName,
+            ProfilePayloadOrganization=args.ProfilePayloadOrganization,
+            ProfilePayloadDisplayName=args.ProfilePayloadDisplayName,
+            ProfilePayloadDescription=args.ProfilePayloadDescription,
+            VPNPayloadDisplayName=args.VPNPayloadDisplayName,
+            VPNPayloadOrganization=args.VPNPayloadOrganization,
+            VPNPayloadDescription=args.VPNPayloadDescription,
+        )
 
     with open(args.output, 'w') as f:
         f.write(res)
