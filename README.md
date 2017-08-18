@@ -19,12 +19,13 @@ start two OpenVPN servers:
 
 ## Setup
 [Docker][docker] is used on the remote server for easy deployment. All files
-that are required on the remote server are placed in the server directory. The
-clients directory contains example configurations, there is a script provided
-that generates [`.mobileconfig`][mobileconfig_apple_docs] files. These provide a
-VPN configuration profile for iOS that provides on-demand functionality. This
-creates a configuration where the the device always tries to connect and route
-traffic through the VPN connection.
+that are required on the remote server are placed in the server directory.
+
+The clients directory contains example configurations, there is a script 
+that generates [`.mobileconfig`][mobileconfig_apple_docs] files. These
+configuration files contain a VPN profile for iOS that provides on-demand
+functionality. This is a configuration where the the device always tries to
+connect and route traffic through the VPN connection.
 
 ## License
 
