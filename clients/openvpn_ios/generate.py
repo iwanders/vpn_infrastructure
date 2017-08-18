@@ -54,7 +54,7 @@ if __name__ == "__main__":
 
     parser.add_argument('--UserDefinedName', type=str, default=None,
                         help='User defined name, as shown in VPN menu'
-                        ' defaults to VPN - {host}:{port}/{proto}')
+                        ' defaults to "VPN - {host}:{port}/{proto}"')
 
     parser.add_argument('--ProfilePayloadDescription', type=str,
                         default=None,
@@ -66,17 +66,21 @@ if __name__ == "__main__":
                         'VPN {host}:{port}/{proto} on demand)')
     parser.add_argument('--ProfilePayloadOrganization', type=str,
                         default="Organization",
-                        help='The organization to display.')
+                        help='The organization to display for the'
+                        'configuration profile itself.')
 
     parser.add_argument('--VPNPayloadDescription', type=str,
                         default="Configures VPN configuration, authentication"
                         " and on demand rules.",
                         help='The description to display.')
     parser.add_argument('--VPNPayloadDisplayName', type=str, default=None,
-                        help='Display name, defaults to VPN -'
-                        ' {host}:{port}/{proto}')
+                        help='Display name, defaults to "VPN -'
+                        ' {host}:{port}/{proto}".')
     parser.add_argument('--VPNPayloadOrganization', type=str, default="",
-                        help='The organization to display for the VPN config.')
+                        help='The organization to display for the VPN config.'
+                        ' This is shown as grey beneath the'
+                        ' VPNPayloadDisplayName value in the VPN settings'
+                        ' menu')
 
     args = parser.parse_args()
 
