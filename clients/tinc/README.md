@@ -1,4 +1,4 @@
-#tinc
+# tinc
 
 This client example is a bit of an odd one, because [tinc][tinc] does not
 discern between client and server nodes.
@@ -9,8 +9,8 @@ running the tinc configuration provided in the [server](../../server/tinc/)
 folder. This example does not expose a subnet to the tinc network but merely
 joins it and ensures the entire tinc network is accessible.
 
-It is intended to be run from this directory, this can be done by starting it
-with the [start_tinc.sh](start_tinc.sh) script.
+It is intended to be run from with this directory as configuration, this can be
+done by starting it with the [start_tinc.sh](start_tinc.sh) script.
 
 ## Credentials
 Tinc uses RSA keys for security. For two nodes in the network to connect to each
