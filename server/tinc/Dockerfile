@@ -1,7 +1,7 @@
 # Leaner build then Ubunutu
 FROM ubuntu:trusty
 
-RUN apt-get update && apt-get install -y tinc
+RUN apt-get update && apt-get install -y tinc iptables
 
 ADD ./etc/tinc/ /etc/tinc/
 
