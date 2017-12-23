@@ -8,7 +8,9 @@ This contains guidance how to configure the clients. The `openvpn_` clients assu
 * [tinc](tinc) This contains the example files to setup the keys required for
     tinc and the 'client' configuration. Tinc does not differentiate between a
     client and a server, but this is the road warrior configuration.
-
+* [http_ssl_client](http_ssl_client) This contains a script that can be used to
+    produce a `.p12` file that a browser can use to authenticate with the proxy
+    that requires the client side ssl certificates.
 
 
 [python]: https://www.python.org/

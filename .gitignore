@@ -5,12 +5,16 @@
 *.priv
 *.priv.*
 pki/pki/
+pki/client-pki/
 clients/*/*.key
 clients/*/*.crt
 clients/*/*.mobileconfig
 clients/tinc/client.*
 clients/tinc/server.*
-/server/tinc/remote_server.*
+server/tinc/remote_server.*
+
+proxy/etc/nginx/dh2048.pem
+proxy/etc/nginx/certs/
 
 server/openvpn/openvpn.conf
 server/tinc/tinc.conf
