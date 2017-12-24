@@ -11,4 +11,4 @@ cp $EASYRSA_PKI/issued/openvpn_server.crt etc/nginx/certs/server.crt
 cp $EASYRSA_PKI/dh.pem etc/nginx/dh2048.pem
 
 # copy the client certificate chain
-cp $EASYRSA_CLIENT_PKI/client-ca-with-root-ca.crt etc/nginx/certs/client-ca-with-root-ca.crt
+cp $EASYRSA_CLIENT_PKI/ca.crt etc/nginx/certs/ca.crt

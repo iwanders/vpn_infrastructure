@@ -10,13 +10,11 @@ This contains some helper files for use with [easy-rsa][easyrsa].
 * [setup.sh](setup.sh) Can be sourced from anywhere, after that the `easyrsa` 
     script can be used and the PKI infrastructure in the `pki` folder is used.
 
-# Intermediate CA for client side certificates.
-For the client side SSL certificates we create a intermediate certificate
-authority that signs the client side certificates. 
+# Certificate Authority for client side certificates.
+For the client side SSL certificates we create another certificate authority
+that is just used for the client certificates.
 * [client-create_ca.sh](client-create_ca.sh) Sets up the `client-pki` folder and
-    creates a sub ca that is to be signed by the original ca.
-* [client-subca-sign.sh](client-subca-sign.sh) This uses the originally setup
-    certificate authority to sign the intermediate authority.
+    creates a certificate authority for this.
 * [client-create_clients.sh](client-create_clients.sh) This runs through the
     client folders and creates client certificates for each.
 * [client-setup.sh](client-setup.sh) Can be sourced from anywhere, after that
