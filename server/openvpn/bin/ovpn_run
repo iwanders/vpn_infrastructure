@@ -13,7 +13,9 @@ CONF="/etc/openvpn/server.conf"
 # Make the VPN the default gateway for the clients.
 echo 'push "redirect-gateway def1 bypass-dhcp"' >> $CONF
 
-# Fix DNS on OS X (was necessary years ago, redundant now?)
+# Push a DNS that can be reached over the vpn.
+# This is required in case the clients' current DNS only allows requests from a
+# specific ip range, which usually does not include the server.
 echo 'push "dhcp-option DNS 8.8.8.8"' >> $CONF
 
 # Allow client-client communication
