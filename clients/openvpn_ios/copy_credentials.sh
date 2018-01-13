@@ -7,11 +7,6 @@ OUR_CN_NAME=$(basename $DIR)
 # easyrsa 3
 EASYRSA_PKI="${EASYRSA_PKI:-'../../pki/pki'}"
 
-# iOS requires p12 export.
-echo "iOS demands the p12 file in the certificate has a password, don't leave it empty."
-easyrsa export-p12 $OUR_CN_NAME
-
-
 # Assume that the name is openvpn_server.
 cp $EASYRSA_PKI/private/$OUR_CN_NAME.key client.key
 cp $EASYRSA_PKI/issued/$OUR_CN_NAME.crt client.crt
