@@ -54,7 +54,7 @@ SOFTWARE.
                 <key>VPN</key>
                 <dict>
                         <key>AuthenticationMethod</key>
-                        <string>Certificate</string>
+                        <string>Password</string>
                         <!--
                             On demand can be toggled in the menu regardless of this setting.
                         -->
@@ -85,13 +85,13 @@ SOFTWARE.
                                     </array>
                             </dict>
                         </array>
-                        <key>PayloadCertificateUUID</key>
-                        <string>{pkcs_payload_uuid:s}</string>
+                        <key>AuthName</key>
+                        <string>DEFAULT</string>
                         <key>RemoteAddress</key>
                         <string>{host:s}</string>
                 </dict>
                 <key>VPNSubType</key>
-                <string>net.openvpn.OpenVPN-Connect.vpnplugin</string>
+                <string>net.openvpn.connect.app</string>
                 <key>VPNType</key>
                 <string>VPN</string>
                 <key>VendorConfig</key>
@@ -103,6 +103,10 @@ SOFTWARE.
                         -->
                         <key>ca</key>
                             <string>{ca_crt:s}</string>
+                        <key>cert</key>
+                            <string>{client_crt:s}</string>
+                        <key>key</key>
+                            <string>{client_key:s}</string>
                         <key>client</key>
                             <string>NOARGS</string>
                         <key>comp-lzo</key>
@@ -129,30 +133,9 @@ SOFTWARE.
                             <string>NOARGS</string>
                         <key>cipher</key>
                             <string>AES-256-CBC</string>
+                        <key>vpn-on-demand</key>
+                            <string>0</string>
                 </dict>
-            </dict>
-            <dict>
-                    <key>Password</key>
-                    <string>{password:s}</string>
-                    <key>PayloadCertificateFileName</key>
-                    <string>client_pkcs.p12</string>
-                    <key>PayloadContent</key>
-                    <data>{internal_key_and_cert:s}
-                    </data>
-                    <key>PayloadDescription</key>
-                    <string>Provides device authentication (certificate or identity).</string>
-                    <key>PayloadDisplayName</key>
-                    <string>client_pkcs.p12</string>
-                    <key>PayloadIdentifier</key>
-                    <string>{pkcs_payload_uuid:s}.remote_server_cert_and_key</string>
-                    <key>PayloadOrganization</key>
-                    <string></string>
-                    <key>PayloadType</key>
-                    <string>com.apple.security.pkcs12</string>
-                    <key>PayloadUUID</key>
-                    <string>{pkcs_payload_uuid:s}</string>
-                    <key>PayloadVersion</key>
-                    <integer>1</integer>
             </dict>
 	</array>
 	<key>PayloadDescription</key>
