@@ -16,3 +16,8 @@ echo "Restarting openvpn"
 cd openvpn
 ./restart.sh
 cd ..
+
+echo "Starting sslh"
+cd sslh
+./restart.sh
+cd ..
