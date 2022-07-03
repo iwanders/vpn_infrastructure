@@ -12,10 +12,7 @@ The infrastructure is best explained with a diagram:
 ![VPN_infrastructure](doc/vpn_infrastructure.png)
 
 The ip addresses and configuration files in this repository should correspond
-to the diagram. Only one OpenVPN server is drawn, but the configuration actually
-start two OpenVPN servers:
- * On port 1194 using UDP (OpenVPN's standard configuration, prefered)
- * On port 443 using TCP (Looks like https traffic to get through firewalls)
+to the diagram. See the [`server/`](/server) readme for more information.
 
 ## Setup
 [Docker][docker] is used on the remote server for easy deployment. All files

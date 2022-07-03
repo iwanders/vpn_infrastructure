@@ -21,3 +21,9 @@ echo "Starting sslh"
 cd sslh
 ./restart.sh
 cd ..
+
+echo "Restarting proxy_exposer"
+cd proxy_exposer
+./restart.sh
+cd ..
+

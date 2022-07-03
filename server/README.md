@@ -11,8 +11,8 @@ used to allow the nodes on the VPN network to reach each other.
 
 ## OpenVPN
 The [openvpn/start_openvpn.sh](openvpn/start_openvpn.sh) script can be used to 
-start the two OpenVPN containers with the default configuration of one on port
-443 using TCP and another one on 1194 using UDP. This script also gives the
+start the two OpenVPN containers with the default configuration of one on ~port
+443 using TCP~ and another one on 1194 using UDP. This script also gives the
 containers their static ip addresses on the `VPNLAN`.
 
 [openvpn/bin/opvn_run](openvpn/bin/ovpn_run) is the main entrypoint for the 
@@ -32,6 +32,11 @@ just adds routes to ensure that traffic that reaches the tinc daemon from the
 VPN network and is intended at the OpenVPN clients gets routed to the correct
 OpenVPN instances. The ip addresses in this file should thus correspond to those
 in the OpenVPN start script and their configurations.
+
+
+## sslh
+Sits in front of everything, binds tcp on port 443 and forwards to the appropriate services on
+the internal docker lan.
 
 
 ## Helper scripts
