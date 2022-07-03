@@ -1,0 +1,15 @@
+#!/bin/bash
+
+VPNLAN='172.30.2'
+
+PROXY_TARGET=172.30.4.1
+PROXY_TARGET_PORT=7000
+
+# Ensure that all traffic aimed at the tinc subnet goes to the ip that runs
+# the tinc deamon on this network. So anything to 172.30.0.0/12 has $VPNLAN.21
+# as its gateway.
+ip route add 172.30.0.0/16 via $VPNLAN.1 dev eth0
+
+
+socat TCP4-LISTEN:4000,bind=0.0.0.0,fork,reuseaddr,nodelay \
+    TCP4:$PROXY_TARGET:$PROXY_TARGET_PORT,nodelay
