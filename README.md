@@ -1,5 +1,7 @@
 # vpn_infrastructure
 
+> :warning: All these Dockerfiles use super old versions, just use it as a reference.
+
 This repository contains helper scripts I created to help setup my VPN
 infrastructure. My goal was to be able to reach a local server behind a
 residential router from my [road warriors][road_warrior].

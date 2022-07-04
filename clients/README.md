@@ -11,6 +11,8 @@ This contains guidance how to configure the clients. The `openvpn_` clients assu
 * [http_ssl_client](http_ssl_client) This contains a script that can be used to
     produce a `.p12` file that a browser can use to authenticate with the proxy
     that requires the client side ssl certificates.
+* [client_wg](client_wg) Connects to the wireguard server, use with `wg-quick up ./wireguard.conf`
+    don't forget to setup the keys correctly in both the server and the client.
 
 
 [python]: https://www.python.org/

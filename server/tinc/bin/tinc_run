@@ -8,9 +8,12 @@ ip route add $VPNLAN.128/27 via $VPNLAN.3 dev eth0
 # Openvpn at  172.30.2.4 serves subnet 172.30.2.192/27
 ip route add $VPNLAN.192/27 via $VPNLAN.4 dev eth0
 
+# Add route subnet for wireguard subnet, we would add routes here.
+ip route add $VPNLAN.64/27 via $VPNLAN.8 dev eth0 
+
 # Ensure the connected VPN clients have NAT.
 echo 1 > /proc/sys/net/ipv4/ip_forward
 iptables -t nat -A POSTROUTING -s $VPNLAN.0/12 -j MASQUERADE
 
 # Start tinc.
-tincd -D -d 3 --net vpn
+tincd -D -d 2 --net vpn

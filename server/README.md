@@ -33,10 +33,18 @@ VPN network and is intended at the OpenVPN clients gets routed to the correct
 OpenVPN instances. The ip addresses in this file should thus correspond to those
 in the OpenVPN start script and their configurations.
 
+## Wireguard
+The wireguard server acts in the same way as the openvpn servers. Ran into some problems trying to
+make wireguard bounce to an already existing subnet, so it serves just a single IP and then serves
+as a gateway and NAT. Routes are added to make this work in both directions and ensure that the
+ips that the clients claim can be reached from anywhere on the subnet. As well as the clients being
+able to reach any other nodes on the subnet.
 
 ## sslh
 Sits in front of everything, binds tcp on port 443 and forwards to the appropriate services on
 the internal docker lan.
+
+
 
 
 ## Helper scripts
