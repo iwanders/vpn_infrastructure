@@ -11,4 +11,5 @@ wg-quick up ${DIR}/wireguard.conf
 
 # Blocking loop.
 #~ while true; do wg; sleep 30; done
-while true; sleep 30; done
+while true; do sleep 30; done
+
