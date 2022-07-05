@@ -37,6 +37,13 @@ ip route add 172.30.0.0/16 via $VPNLAN.1 dev eth0
 echo 1 > /proc/sys/net/ipv4/ip_forward
 iptables -t nat -A POSTROUTING -s $VPNLAN.128/25 -j MASQUERADE
 
+# Here, we do a bit of a hack, but the eth0 interface (provided by dockerlan) sets
+# the entire ${VPNLAN}.0/24 subrange. But wireguard is on ${VPNLAN}.64/26, openvpn is on
+# ${VPNLAN}.128/26 and ${VPNLAN}.192/26, so to allow inter-client communication we need
+# to ensure that only ${VPNLAN}.0/26 goes to eth0. Source ip is passed in as $2.
+ip route del ${VPNLAN}.0/24
+ip route add ${VPNLAN}.0/26 dev eth0 scope link src $2
+
 if [ $1 == '--https' ]; then
     # Place https range in 128-192
     echo "server $VPNLAN.128 255.255.255.224" >> $CONF
