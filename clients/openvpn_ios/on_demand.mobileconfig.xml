@@ -62,28 +62,33 @@ SOFTWARE.
                         <integer>1</integer>
                         <key>OnDemandRules</key>
                         <array>
-                            <dict>
-                                <key>Action</key>
-                                <string>EvaluateConnection</string>
-                                <key>ActionParameters</key>
-                                    <array>
-                                        <dict>
-                                            <!-- Start VPN connection when any of these domains are detected. -->
-                                            <key>Domains</key>
-                                            <array>
-                                                <string>*.com</string>
-                                                <string>*.net</string>
-                                                <string>*.org</string>
-                                                <string>*.info</string>
-                                            </array>
-                                            <key>RequiredURLStringProbe</key>
-                                                <!-- Or just always connect if this URL does not return status 200.. -->
-                                                <string>https://vpn.{host:s}.local/</string>                    
-                                            <key>DomainAction</key>
-                                            <string>ConnectIfNeeded</string>
-                                        </dict>
-                                    </array>
-                            </dict>
+
+                          {not_on_ssids:s}
+
+
+                          <!-- "Connect", "Disconnect", or "Ignore" if device is connected to a Cellular network -->
+                          <dict>
+                                  <key>Action</key>
+                                  <string>Connect</string>
+                                  <key>InterfaceTypeMatch</key>
+                                  <string>Cellular</string>
+                          </dict>
+
+                          <!-- "Connect", "Disconnect", or "Ignore" if device is connected via Ethernet -->
+                          <dict>
+                                  <key>Action</key>
+                                  <string>Connect</string>
+                                  <key>InterfaceTypeMatch</key>
+                                  <string>Ethernet</string>
+                          </dict>
+
+                          <!-- "Connect", "Disconnect", or "Ignore" if device is connected to any other WiFi network -->
+                          <dict>
+                                  <key>Action</key>
+                                  <string>Connect</string>
+                                  <key>InterfaceTypeMatch</key>
+                                  <string>WiFi</string>
+                          </dict>
                         </array>
                         <key>AuthName</key>
                         <string>DEFAULT</string>
@@ -143,7 +148,7 @@ SOFTWARE.
 	<key>PayloadDisplayName</key>
 	<string>{ProfilePayloadDisplayName:s}</string>
 	<key>PayloadIdentifier</key>
-	<string>{host:s}.{port:d}.{proto:s}.vpnondemand</string>
+	<string>{PayloadIdentifier:s}</string>
 	<key>PayloadOrganization</key>
 	<string>{ProfilePayloadOrganization:s}</string>
 	<key>PayloadRemovalDisallowed</key>

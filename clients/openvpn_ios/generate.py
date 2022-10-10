@@ -49,54 +49,101 @@ if __name__ == "__main__":
     parser.add_argument("--port", type=int, default=443,
                         help='the port to use')
 
+    parser.add_argument("--not-on-ssid", type=str, default=None, nargs='*',
+                        help='Specify SSIDs on which not to connect to vpn.')
+
     parser.add_argument('--UserDefinedName', type=str, default=None,
                         help='User defined name, as shown in VPN menu'
-                        ' defaults to "VPN - {host}:{port}/{proto}"')
+                        ' defaults to "{host}:{port}/{proto}"')
 
+    # Used for the profile.
     parser.add_argument('--ProfilePayloadDescription', type=str,
                         default=None,
                         help='The profile payload description (defaults to: '
-                        'VPN {host:s}:{port:d}/{proto:s} with vpn on demand)')
+                        '{host:s}:{port:d}/{proto:s})')
     parser.add_argument('--ProfilePayloadDisplayName', type=str,
                         default=None,
                         help='The profile payload description (defaults to: '
-                        'VPN {host}:{port}/{proto} on demand)')
+                        '{host}:{port}/{proto})')
     parser.add_argument('--ProfilePayloadOrganization', type=str,
                         default="Organization",
                         help='The organization to display for the'
                         'configuration profile itself.')
 
+    # Used for the actual vpn connection.
     parser.add_argument('--VPNPayloadDescription', type=str,
                         default="Configures VPN configuration, authentication"
                         " and on demand rules.",
                         help='The description to display.')
     parser.add_argument('--VPNPayloadDisplayName', type=str, default=None,
-                        help='Display name, defaults to "VPN -'
-                        ' {host}:{port}/{proto}".')
+                        help='Display name, defaults to "'
+                        '{host}:{port}/{proto}".')
     parser.add_argument('--VPNPayloadOrganization', type=str, default="",
                         help='The organization to display for the VPN config.'
                         ' This is shown as grey beneath the'
                         ' VPNPayloadDisplayName value in the VPN settings'
                         ' menu')
 
+    # All these names are super confusing.
+    parser.add_argument('--vpn-title', type=str, default=None,
+                        help='The title to display everywhere. Overrides all other naming. Substitution for host, port proto happens.')
+    parser.add_argument('--vpn-sub-title', type=str, default=None,
+                        help='The grey subtitle to display everywhere. Overrides all other naming. Substitution for host, port proto happens.')
+    
+
     args = parser.parse_args()
 
     if not args.VPNPayloadDisplayName:
-        args.VPNPayloadDisplayName = "VPN - {host}:{port}/{proto}".format(
+        args.VPNPayloadDisplayName = "{host}:{port}/{proto}".format(
             host=args.host, proto=args.proto, port=args.port)
 
     if not args.ProfilePayloadDisplayName:
-        args.ProfilePayloadDisplayName = "VPN {host}:{port}/{proto} on " \
-            "demand".format(host=args.host, proto=args.proto, port=args.port)
+        args.ProfilePayloadDisplayName = "{host}:{port}/{proto}" \
+            "".format(host=args.host, proto=args.proto, port=args.port)
 
     if not args.UserDefinedName:
-        args.UserDefinedName = "VPN - {host}:{port}/{proto}".format(
+        args.UserDefinedName = "{host}:{port}/{proto}".format(
             host=args.host, proto=args.proto, port=args.port)
 
     if not args.ProfilePayloadDescription:
-        args.ProfilePayloadDescription = 'VPN {host:s}:{port:d}/{proto:s} ' \
-            'with vpn on demand'.format(host=args.host, port=args.port,
+        args.ProfilePayloadDescription = '{host:s}:{port:d}/{proto:s}' \
+            ''.format(host=args.host, port=args.port,
                                         proto=args.proto)
+
+    # Unique key used by IOS to distinguish profiles.
+    payload_identifier = "{host:s}:{port:d}/{proto:s}".format(host=args.host, port=args.port,
+                                        proto=args.proto)
+
+    if args.vpn_title:
+        vpn_title = args.vpn_title.format(host=args.host, port=args.port,
+                                        proto=args.proto)
+        args.UserDefinedName = vpn_title
+        args.VPNPayloadDisplayName = vpn_title
+        args.ProfilePayloadDisplayName = vpn_title
+        args.ProfilePayloadDescription = vpn_title
+        payload_identifier += vpn_title
+
+    if args.vpn_sub_title:
+        vpn_sub_title = args.vpn_sub_title.format(host=args.host, port=args.port,
+                                        proto=args.proto)
+        args.ProfilePayloadOrganization = vpn_sub_title
+        args.VPNPayloadOrganization = vpn_sub_title
+        payload_identifier += "_" + vpn_sub_title
+
+    not_on_ssids = ""
+    if args.not_on_ssid:
+        not_on_ssids = """
+                          <dict>
+                                  <key>Action</key>
+                                  <string>Disconnect</string>
+                                  <key>InterfaceTypeMatch</key>
+                                  <string>WiFi</string>
+                                  <key>SSIDMatch</key>
+                                  <array>
+                                          {}
+                                  </array>
+                          </dict>
+        """.format("\n                                          ".join(f"<string>{v}</string>" for v in args.not_on_ssid))
 
     with open("ca.crt", "r") as f:
         ca_crt = f.read()
@@ -136,6 +183,8 @@ if __name__ == "__main__":
             VPNPayloadDisplayName=args.VPNPayloadDisplayName,
             VPNPayloadOrganization=args.VPNPayloadOrganization,
             VPNPayloadDescription=args.VPNPayloadDescription,
+            PayloadIdentifier=payload_identifier,
+            not_on_ssids=not_on_ssids,
         )
 
     with open(args.output, 'w') as f:
