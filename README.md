@@ -26,6 +26,17 @@ configuration files contain a VPN profile for iOS that provides on-demand
 functionality. This is a configuration where the the device always tries to
 connect and route traffic through the VPN connection.
 
+## Certificates
+
+Outside of docker install cerbot; https://certbot.eff.org/
+
+Manual command to procure certificates is:
+```
+certbot certonly -d <DOMAIN> --standalone --register-unsafely-without-email --agree-tos
+```
+
+This adds an entry to `/etc/cron.d/certbot` scheduling a cronjob to autorun.
+
 ## License
 
 MIT License, see [LICENSE](LICENSE).
