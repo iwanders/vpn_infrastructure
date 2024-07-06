@@ -37,6 +37,14 @@ certbot certonly -d <DOMAIN> --standalone --register-unsafely-without-email --ag
 
 This adds an entry to `/etc/cron.d/certbot` scheduling a cronjob to autorun.
 
+## Debugging
+```
+docker exec -it <NAME> /bin/bash
+```
+to drop into a prompt inside the container.
+
+Netstat and friends; `apt-get install net-tools`.
+
 ## License
 
 MIT License, see [LICENSE](LICENSE).
