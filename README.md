@@ -35,7 +35,8 @@ Manual command to procure certificates is:
 certbot certonly -d <DOMAIN> --standalone --register-unsafely-without-email --agree-tos
 ```
 
-This adds an entry to `/etc/cron.d/certbot` scheduling a cronjob to autorun.
+This adds an entry to `/etc/cron.d/certbot` scheduling a cronjob to autorun, add any hooks to restart
+servers to the `/etc/letsencrypt/renewal-hooks/post/` directory and mark them excutable.
 
 ## Debugging
 ```
